@@ -1,3 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PhotoUtil</string>
+
+    <string name="app_name">智启视频制作工具测试版</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+
+    <string name="button_name_add_camera">添加摄像头</string>
+    <string name="button_name_auto_scan_mode">自动扫描</string>
+    <string name="button_name_camera_trust_list">信任列表</string>
+    
+    <string name="dialog_message_delete_camera">是否删除当前摄像头？</string>
+    
+    <string name="camera_list_header_view_serial_number">序列号</string>
+    <string name="camera_list_header_view_p2p_serial_number">P2P序列号</string>
+    <string name="camera_list_header_view_ip_address">IP地址</string>
+    <string name="camera_list_header_view_scan_status">扫描</string>
+    <string name="camera_list_header_view_record_status">录制</string>
+    <string name="camera_list_header_view_upload_status">上传</string>
+    <string name="camera_list_header_view_add_flag">添加</string>
+    <string name="camera_list_header_view_trust_flag">信任</string>
+    <string name="camera_list_header_view_total_record_weight">录制权重</string>
+    <string name="camera_list_header_view_total_upload_weight">上传权重</string>
+
+    <string name="show_img">裁剪框</string>
+    
+    <string name="state">当前状态</string>
+    <string name="state_hint">请输入路径</string>
+    <string name="snap">抓图</string>
+    <string name="action">镜头操作</string>
+    <string name="detect">探测</string>
+    <string name="compare">对比测试</string>
+    
+    <string name="product_video">视频制作</string>
+    <string name="comfirm">确定</string>
+    <string name="save">保存</string>
+    <string name="preview">预览</string>
+    <string name="name_product_video">视频制作工具</string>
+    <string name="video_load">载入视频</string>
+    <string name="video_review">分片预览</string>
+    <string name="video_confirm">确认</string>
+    <string name="video_undo">撤销</string>
+    <string name="video_save">批量生成</string>
+    <string name="video_review_bat">批量预览</string>
+    <string name="video_upload_bat">批量上传</string>
+    <string name="video_shot_move">镜头移动</string>
+    <string name="video_generated">已制作视频</string>
+    <string name="support_tel">详询：400-022-5085</string>
+
+    <string name="picker">Picker</string>
 </resources>

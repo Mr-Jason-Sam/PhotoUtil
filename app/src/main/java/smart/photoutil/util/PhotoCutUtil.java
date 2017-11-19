@@ -1,8 +1,7 @@
-package smart.photoutil;
+package smart.photoutil.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -10,22 +9,18 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-import java.util.Set;
+
+import smart.photoutil.util.GaussianBlurUtil;
+import smart.photoutil.util.GridFilpAction;
 
 /**
  * Created by jasonsam on 2017/10/9.
@@ -182,7 +177,7 @@ public class PhotoCutUtil {
 
     public void dimImage(String srcPath, String desPath,int num){
         Bitmap bm = BitmapFactory.decodeFile(srcPath);
-        bm = scaleBitmap(bm);
+//        bm = scaleBitmap(bm);
         Bitmap image = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas cas = new Canvas(image);
         try {
@@ -265,9 +260,9 @@ public class PhotoCutUtil {
             ColorMatrix lumMatrix = new ColorMatrix();
 
             if (type == "in")
-                lumMatrix.setScale(lum, lum, lum, 2.0f/25*num);
+                lumMatrix.setScale(lum, lum, lum, 1.0f/25*num);
             else if (type == "out")
-                lumMatrix.setScale(lum,lum, lum, 2.0f/25*(25-num));
+                lumMatrix.setScale(lum,lum, lum, 1.0f/25*(25-num));
             ColorMatrix ImageMatrix = new ColorMatrix();
             ImageMatrix.postConcat(lumMatrix);
 
@@ -325,7 +320,7 @@ public class PhotoCutUtil {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+            bm.compress(Bitmap.CompressFormat.PNG, 30, fos);
 
 //            fos.write(bm.getRowBytes());
 

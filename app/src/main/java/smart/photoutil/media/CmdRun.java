@@ -1,15 +1,14 @@
-package smart.photoutil;
+package smart.photoutil.media;
 
-import android.provider.Telephony;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import smart.photoutil.util.PhotoCutUtil;
 
 /**
  * Created by jasonsam on 2017/10/9.
@@ -20,29 +19,31 @@ public class CmdRun {
     public final static String ROOTPATH = "/sdcard/App/";
     public final static String MOIVE = "test.mp4";
 
+    Process p;
+
     public enum  Transition { Wipe, Dim, Fade, Blur, Puzzle, GridToFlip;}
 
-    public void processFFmpegCmd(final String[] command) {
-
-        new Thread(new Runnable() {
+    public void processFFmpegCmd(final List<String> command) {
+        Log.i(TAG,"Start!!");
+        Thread thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 try {
                     Log.i(TAG,"Starting thread");
+
                     ProcessBuilder builder = new ProcessBuilder();
                     builder.command(command);
                     builder.redirectErrorStream(true);
 
-                    Process p;
                     p = builder.start();
                     BufferedReader buf = null;
                     String line = null;
                     buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
                     Log.i(TAG,"Starting readLine");
                     while ((line = buf.readLine()) != null) {
                         Log.i(TAG, "processFFmpegCmd, line:" + line);
-//                textview.setText(line);
                     }
                     p.waitFor();//wait for command completed.
                     Log.i(TAG, "processFFmpegCmd, process exit.");
@@ -54,7 +55,7 @@ public class CmdRun {
 
             }
         });
-
+        thread.start();
     }
 
     public void TranAction(float location , float duration, Transition transition){
@@ -128,7 +129,7 @@ public class CmdRun {
         else if(duration <0)
             cmd.add("ffmpeg -i " + MOIVE + " -ss " + (location-duration) + " -t "+ (-duration) + " " + ROOTPATH + "material"+"/%d.png");
 
-        processFFmpegCmd(cmd.get(0).split(" "));
+//        processFFmpegCmd(cmd.get(0).split(" "));
     }
 
 

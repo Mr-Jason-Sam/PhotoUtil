@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x1256"
+    android:layout_height="@dimen/y677">
+
+
+        <smart.photoutil.View.CropImageView
+            android:id="@+id/endCropimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+        <smart.photoutil.View.CropImageView
+            android:id="@+id/beginCropimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+        <smart.photoutil.View.ArrowHead
+            android:id="@+id/ArrowHeadSurface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+
+</RelativeLayout>

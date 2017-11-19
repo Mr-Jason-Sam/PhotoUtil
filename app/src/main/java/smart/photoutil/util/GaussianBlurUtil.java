@@ -1,4 +1,4 @@
-package smart.photoutil;
+package smart.photoutil.util;
 
 
 import android.graphics.Bitmap;

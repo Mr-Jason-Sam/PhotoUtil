@@ -1,22 +1,48 @@
-/**
+/**   
  * <p><h1>Copyright:</h1><strong><a href="http://www.smart-f.cn">
  * BeiJing Smart Future Technology Co.Ltd. 2015 (c)</a></strong></p>
  */
-package smart.photoutil;
+package smart.photoutil.media;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * <p>
+ * <h1>Copyright:</h1><strong><a href="http://www.smart-f.cn"> BeiJing Smart
+ * Future Technology Co.Ltd. 2015 (c)</a></strong>
+ * </p>
+ *
+ * <p>
+ * <h1>Reviewer:</h1> <a href="mailto:jiangjunjie@smart-f.cn">jjj</a>
+ * </p>
+ * 
+ * <p>
+ * <h1>History Trace:</h1>
+ * <li>2017年5月25日 下午1:25:38 V1.0.0 jjj first release</li>
+ * </p>
+ * 
+ * @Title FFmpegCommand.java
+ * @Description please add description for the class
+ * @author jjj
+ * @email <a href="jiangjunjie@smart-f.cn">jiangjunjie@smart-f.cn</a>
+ * @date 2017年5月25日 下午1:25:38
+ * @version V1.0
+ */
 public class FFmpegConstant {
 
-    private static final String  TAG                = FFmpegConstant.class.getSimpleName();
+    private static final String TAG                = FFmpegConstant.class.getSimpleName();
 
     public static final String FFMPEG_SYSTEM_PATH   = "/system/bin/ffmpeg";
-    public static String ffmpegPath                 = "";
+    public static String ffmpegPath                 = "ffmpeg";
 
     public static final String FFMPEG_NAME          = "ffmpeg";
 
@@ -36,6 +62,8 @@ public class FFmpegConstant {
     public static final String ERR_NO_FILTER        = "No such filter";
     public static final String ERR_INIT_FILTER      = "Error reinitializing filters";
     public static final String ERR_DECODE           = "error while decoding";
+
+    public static final String KEY_FRAME            = "pict_type:I";
     //"Failed to inject frame into filter network";
     //Input
     //Press [q] to stop, [?] for help
@@ -44,6 +72,7 @@ public class FFmpegConstant {
     //video:291603kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
     public static final String FINISH_PRE           = "other streams:";
     public static final String FINISH               = "Qavg";
+    public static final String NO_FILE              = "No such file or directory";
 
     public static final String MEDIA_ASSET_DIR      = "media";
     private static boolean ffmpegInited;
@@ -59,64 +88,46 @@ public class FFmpegConstant {
         AssetManager assetManager = context.getAssets();
         Log.i(TAG, "initFFmpeg, assetManager:"+assetManager);
         if (assetManager == null) {
-            Log.i(TAG,"assetManager is null");
             return false;
         }
-
-
-//        File file = new File();
-//        InputStream is =
-//        FileOutputStream fos = new FileOutputStream(file);
-//        byte[] buffer = new byte[1024];
-//        while (true) {
-//            int len = is.read(buffer);
-//            if (len == -1) {
-//                break;
-//            }
-//            fos.write(buffer, 0, len);
-//        }
-//        is.close();
-//        fos.close();
-//        try {
-//            String ffmpegName = FFmpegConstant.FFMPEG_NAME;
-//            String[] assets = assetManager.list(MEDIA_ASSET_DIR);
-//            Log.i(TAG,assets.toString());
-//            for (String asset:assets) {
-//                Log.i(TAG, "initFFmpeg, asset:"+asset);
-//                if (asset.equals(ffmpegName)) {
-//                    File file = new File(context.getFilesDir(), ffmpegName);
-//                    if (!file.exists()) {
-//                        Log.i(TAG, "initFFmpeg, not exist.");
-//                        file.createNewFile();
-//                    }
-//                    if (file.exists()) {
-//                        Log.i(TAG, "initFFmpeg, create.");
-//                        InputStream is = assetManager.open(MEDIA_ASSET_DIR+File.separator+ffmpegName);
-//                        FileOutputStream fos = new FileOutputStream(file);
-//                        byte[] buffer = new byte[1024];
-//                        while (true) {
-//                            int len = is.read(buffer);
-//                            if (len == -1) {
-//                                break;
-//                            }
-//                            fos.write(buffer, 0, len);
-//                        }
-//                        is.close();
-//                        fos.close();
-//                        Log.i(TAG, "initFFmpeg, ffmpeg exist:" + file.exists() + ", path:" + file.getAbsolutePath()
-//                                + ", size:" + file.length());
-//                        if (chmod(file.getAbsolutePath())) {
-//                            ffmpegPath = file.getAbsolutePath();
-//                            ffmpegInited = true;
-//                            return true;
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (IOException e) {
-//            Log.i(TAG,"excoption");
-//            e.printStackTrace();
-//        }
+        try {
+            String ffmpegName = FFmpegConstant.FFMPEG_NAME;
+            String[] assets = assetManager.list(MEDIA_ASSET_DIR);
+            for (String asset:assets) {
+                Log.i(TAG, "initFFmpeg, asset:"+asset);
+                if (asset.equals(ffmpegName)) {
+                    File file = new File(context.getFilesDir(), ffmpegName);
+                    if (!file.exists()) {
+                        Log.i(TAG, "initFFmpeg, not exist.");
+                        file.createNewFile();
+                    }
+                    if (file.exists()) {
+                        Log.i(TAG, "initFFmpeg, create.");
+                        InputStream is = assetManager.open(MEDIA_ASSET_DIR+ File.separator+ffmpegName);
+                        FileOutputStream fos = new FileOutputStream(file);
+                        byte[] buffer = new byte[1024];
+                        while (true) {
+                            int len = is.read(buffer);
+                            if (len == -1) {
+                                break;
+                            }
+                            fos.write(buffer, 0, len);
+                        }
+                        is.close();
+                        fos.close();
+                        Log.i(TAG, "initFFmpeg, ffmpeg exist:" + file.exists() + ", path:" + file.getAbsolutePath()
+                                + ", size:" + file.length());
+                        if (chmod(file.getAbsolutePath())) {
+                            ffmpegPath = file.getAbsolutePath();
+                            ffmpegInited = true;
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
